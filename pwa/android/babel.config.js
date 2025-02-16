@@ -1,12 +1,20 @@
 module.exports = {
-  presets: ['module:metro-react-native-babel-preset'],
-  plugins: [
-    ['react-native-web', { commonjs: true }],
-    ['@babel/plugin-proposal-decorators', { legacy: true }],
+  presets: [
+    '@babel/preset-env',
+    '@babel/preset-react',
+    '@babel/preset-typescript',
   ],
+  plugins: [
+    ['@babel/plugin-transform-runtime'],
+    ['@babel/plugin-proposal-class-properties'],
+    process.env.NODE_ENV === 'production' && require('./babel-plugins/tree-shake'),
+  ].filter(Boolean),
   env: {
     production: {
-      plugins: ['transform-remove-console'],
+      plugins: [
+        ['transform-remove-console', { exclude: ['error', 'warn'] }],
+        ['transform-react-remove-prop-types', { removeImport: true }],
+      ],
     },
   },
 };
