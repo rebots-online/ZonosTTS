@@ -7,7 +7,12 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.11",
@@ -20,7 +25,10 @@
     "react-native-web": "^0.19.0",
     "react-scripts": "5.0.1",
     "typescript": "^5.3.0",
-    "workbox-webpack-plugin": "^7.0.0"
+    "workbox-webpack-plugin": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.23.0",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "metro-react-native-babel-preset": "^0.77.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
@@ -31,7 +39,10 @@
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-react": "^7.33.0",
-    "prettier": "^3.0.0"
+    "prettier": "^3.0.0",
+    "@react-native/metro-config": "^0.73.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "@react-native/eslint-config": "^0.73.0"
   },
   "browserslist": {
     "production": [
