@@ -12,7 +12,12 @@
     "ios": "react-native run-ios",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write \"src/**/*.{ts,tsx,js,jsx,json,css,scss,md}\"",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "deps:cache": "node scripts/manage-deps.js cache",
+    "deps:install": "node scripts/manage-deps.js install",
+    "deps:status": "node scripts/manage-deps.js status",
+    "postinstall": "npm run deps:cache",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@react-native-community/masked-view": "0.1.11",
