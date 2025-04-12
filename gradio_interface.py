@@ -103,7 +103,12 @@ def generate_audio(
     dnsmos_ovrl,
     speaker_noised,
     cfg_scale,
+    top_p,
+    top_k,
     min_p,
+    linear,
+    confidence,
+    quadratic,
     seed,
     randomize_seed,
     unconditional_keys,
@@ -121,7 +126,12 @@ def generate_audio(
     speaking_rate = float(speaking_rate)
     dnsmos_ovrl = float(dnsmos_ovrl)
     cfg_scale = float(cfg_scale)
+    top_p = float(top_p)
+    top_k = int(top_k)
     min_p = float(min_p)
+    linear = float(linear)
+    confidence = float(confidence)
+    quadratic = float(quadratic)
     seed = int(seed)
     max_new_tokens = 86 * 30
 
@@ -182,7 +192,7 @@ def generate_audio(
         max_new_tokens=max_new_tokens,
         cfg_scale=cfg_scale,
         batch_size=1,
-        sampling_params=dict(min_p=min_p),
+        sampling_params=dict(top_p=top_p, top_k=top_k, min_p=min_p, linear=linear, conf=confidence, quad=quadratic),
         callback=update_progress,
     )
 
@@ -251,9 +261,22 @@ def build_interface():
             with gr.Column():
                 gr.Markdown("## Generation Parameters")
                 cfg_scale_slider = gr.Slider(1.0, 5.0, 2.0, 0.1, label="CFG Scale")
-                min_p_slider = gr.Slider(0.0, 1.0, 0.15, 0.01, label="Min P")
                 seed_number = gr.Number(label="Seed", value=420, precision=0)
                 randomize_seed_toggle = gr.Checkbox(label="Randomize Seed (before generation)", value=True)
+
+        with gr.Accordion("Sampling", open=False):
+            with gr.Row():
+                with gr.Column():
+                    gr.Markdown("### NovelAi's unified sampler")
+                    linear_slider = gr.Slider(-2.0, 2.0, 0.5, 0.01, label="Linear (set to 0 to disable unified sampling)", info="High values make the output less random.")
+                    #Conf's theoretical range is between -2 * Quad and 0.
+                    confidence_slider = gr.Slider(-2.0, 2.0, 0.40, 0.01, label="Confidence", info="Low values make random outputs more random.")
+                    quadratic_slider = gr.Slider(-2.0, 2.0, 0.00, 0.01, label="Quadratic", info="High values make low probablities much lower.")
+                with gr.Column():
+                    gr.Markdown("### Legacy sampling")
+                    top_p_slider = gr.Slider(0.0, 1.0, 0, 0.01, label="Top P")
+                    min_k_slider = gr.Slider(0.0, 1024, 0, 1, label="Min K")
+                    min_p_slider = gr.Slider(0.0, 1.0, 0, 0.01, label="Min P")
 
         with gr.Accordion("Advanced Parameters", open=False):
             gr.Markdown(
@@ -374,7 +397,12 @@ def build_interface():
                 dnsmos_slider,
                 speaker_noised_checkbox,
                 cfg_scale_slider,
+                top_p_slider,
+                min_k_slider,
                 min_p_slider,
+                linear_slider,
+                confidence_slider,
+                quadratic_slider,
                 seed_number,
                 randomize_seed_toggle,
                 unconditional_keys,
